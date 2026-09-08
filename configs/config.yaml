@@ -1,0 +1,61 @@
+# Конфигурация trading-bot. Секреты (YANDEX_API_KEY, YANDEX_FOLDER_ID,
+# INTERFAX_TOKEN, BCS_TOKEN и т.д.) сюда не входят — только через env/.env.
+
+dry_run: true # обязательный режим по умолчанию до реализации BCSBroker (итерация 7)
+log_level: info
+
+orchestrator:
+  worker_pool_size: 4
+
+  weights:
+    sentiment: 0.6
+    surprise: 0.4
+
+  unknown_surprise_penalty: 0 # при surprise=unknown компонент surprise отключается
+  mixed_sentiment_penalty: 0.5
+
+  event_modifiers:
+    earnings: 1.0
+    guidance: 1.0
+    dividend: 0.8
+    m&a: 1.0
+    management: 0.7
+    regulation: 0.9
+    macro: 0.8
+    product: 0.7
+    legal: 0.8
+    other: 0.5
+
+  thresholds:
+    intraday:
+      min_confidence: 0.6
+      min_impact: 0.5
+      buy_threshold: 0.5
+      sell_threshold: 0.5
+      watch_threshold: 0.3
+      signal_ttl_seconds: 3600
+      cooldown_seconds: 1800
+    swing:
+      min_confidence: 0.5
+      min_impact: 0.4
+      buy_threshold: 0.4
+      sell_threshold: 0.4
+      watch_threshold: 0.25
+      signal_ttl_seconds: 259200
+      cooldown_seconds: 86400
+    position:
+      min_confidence: 0.5
+      min_impact: 0.4
+      buy_threshold: 0.35
+      sell_threshold: 0.35
+      watch_threshold: 0.2
+      signal_ttl_seconds: 2592000
+      cooldown_seconds: 604800
+
+  watchlist: []
+
+  keywords:
+    earnings: ["выручка", "чистая прибыль", "отчётность", "квартал"]
+    dividend: ["дивиденд", "выплата акционерам"]
+    m&a: ["слияние", "поглощение", "сделка"]
+    regulation: ["санкции", "регулятор", "лицензия"]

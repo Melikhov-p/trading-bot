@@ -1,0 +1,45 @@
+version: "3"
+
+silent: true
+
+tasks:
+  build:
+    desc: Собрать все пакеты
+    cmds:
+      - echo "==> Сборка проекта..."
+      - go build ./...
+      - echo "✔ Сборка завершена"
+
+  run:
+    desc: Запустить trading-bot
+    cmds:
+      - echo "==> Запуск trading-bot..."
+      - go run ./cmd/tradingbot
+
+  test:
+    desc: Запустить тесты
+    cmds:
+      - echo "==> Запуск тестов..."
+      - go test ./...
+      - echo "✔ Тесты пройдены"
+
+  vet:
+    desc: Статический анализ go vet
+    cmds:
+      - echo "==> Запуск go vet..."
+      - go vet ./...
+      - echo "✔ go vet завершён без замечаний"
+
+  tidy:
+    desc: Синхронизировать go.mod/go.sum с зависимостями
+    cmds:
+      - echo "==> go mod tidy..."
+      - go mod tidy
+      - echo "✔ go.mod и go.sum синхронизированы"
+
+  fmt:
+    desc: Отформатировать код gofmt
+    cmds:
+      - echo "==> Форматирование кода..."
+      - gofmt -l -w .
+      - echo "✔ Форматирование завершено"
