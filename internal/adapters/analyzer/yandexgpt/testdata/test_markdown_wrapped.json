@@ -1,0 +1,3 @@
+```json
+{"schema_version": "1.0","company": "Сбербанк","ticker": null,"event_type": "earnings","fundamental_sentiment": "positive","surprise": "positive","impact_score": 0.8,"confidence": 0.9,"time_horizon": "1-3m","positive_factors": ["Чистая прибыль увеличилась на 24% год к году"],"negative_factors": ["Стоимость риска выросла с 1,2% до 1,5%"],"key_risk": "Рост стоимости риска","reason": "Чистая прибыль превысила консенсус-прогноз аналитиков."}
+```

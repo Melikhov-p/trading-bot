@@ -26,6 +26,7 @@
 Формат ответа:
 
 {
+"schema_version": "1.0",
 "company": "string",
 "ticker": "string|null",
 

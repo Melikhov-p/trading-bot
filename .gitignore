@@ -33,3 +33,6 @@ go.work.sum
 
 # Secrets
 keys
+
+# AI
+CLAUDE.md
