@@ -45,6 +45,9 @@ func (t ThresholdSet) Cooldown() time.Duration {
 
 // OrchestratorConfig — веса/пороги/справочники, управляющие фильтром и движком решений.
 type OrchestratorConfig struct {
+	// Version участвует в детерминированном SignalID (sha256(NewsID+EngineName+Version)):
+	// смена формулы/весов меняет Version, что делает старые SignalID не сравнимыми с новыми.
+	Version                string                  `yaml:"version"`
 	WorkerPoolSize         int                     `yaml:"worker_pool_size"`
 	Weights                Weights                 `yaml:"weights"`
 	UnknownSurprisePenalty float64                 `yaml:"unknown_surprise_penalty"`

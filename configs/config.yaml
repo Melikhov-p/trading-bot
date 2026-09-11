@@ -5,6 +5,8 @@ dry_run: true # обязательный режим по умолчанию до
 log_level: info
 
 orchestrator:
+  version: "v1" # участвует в SignalID; менять при изменении формулы/весов ниже
+
   worker_pool_size: 4
 
   weights:
