@@ -17,6 +17,10 @@ type FilterResult struct {
 	Relevant bool
 	Reasons  []string
 	Score    float64
+	// HintEventType — категория события, угаданная по ключевым словам
+	// (news.EventTypeUnknown, если ни одна категория не совпала). Передаётся
+	// NewsAnalyzer как ориентир, а не как готовый ответ.
+	HintEventType news.EventType
 }
 
 // NewsProvider поставляет поток новостей из внешнего источника (Интерфакс и т.п.).
