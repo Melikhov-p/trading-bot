@@ -9,6 +9,8 @@ orchestrator:
 
   worker_pool_size: 4
 
+  fixed_position_quantity: 10 # временная заглушка PositionSizer до появления рыночных данных от broker/bcs
+
   weights:
     sentiment: 0.6
     surprise: 0.4
@@ -54,7 +56,15 @@ orchestrator:
       signal_ttl_seconds: 2592000
       cooldown_seconds: 604800
 
-  watchlist: []
+  filter:
+    min_body_length: 80
+    max_age_seconds: 86400 # новость старше суток не актуальна для realtime-реакции
+    dedup_window_seconds: 3600
+    watchlist_weight: 0.6
+    keyword_weight: 0.4
+    min_score_to_pass: 0.5
+
+  watchlist: ["SBER", "GAZP", "LKOH"]
 
   keywords:
     earnings: ["выручка", "чистая прибыль", "отчётность", "квартал"]

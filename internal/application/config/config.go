@@ -43,17 +43,43 @@ func (t ThresholdSet) Cooldown() time.Duration {
 	return time.Duration(t.CooldownSeconds) * time.Second
 }
 
+// FilterConfig — пороги и веса RuleBasedRelevanceFilter. Тайминги хранятся в
+// секундах по той же причине, что и в ThresholdSet — yaml.v3 не анмаршалит
+// строки вида "5m" в time.Duration без кастомного UnmarshalYAML.
+type FilterConfig struct {
+	MinBodyLength      int     `yaml:"min_body_length"`
+	MaxAgeSeconds      int     `yaml:"max_age_seconds"`
+	DedupWindowSeconds int     `yaml:"dedup_window_seconds"`
+	WatchlistWeight    float64 `yaml:"watchlist_weight"`
+	KeywordWeight      float64 `yaml:"keyword_weight"`
+	MinScoreToPass     float64 `yaml:"min_score_to_pass"`
+}
+
+// MaxAge возвращает предельный возраст новости как time.Duration.
+func (f FilterConfig) MaxAge() time.Duration {
+	return time.Duration(f.MaxAgeSeconds) * time.Second
+}
+
+// DedupWindow возвращает окно дедупликации как time.Duration.
+func (f FilterConfig) DedupWindow() time.Duration {
+	return time.Duration(f.DedupWindowSeconds) * time.Second
+}
+
 // OrchestratorConfig — веса/пороги/справочники, управляющие фильтром и движком решений.
 type OrchestratorConfig struct {
 	// Version участвует в детерминированном SignalID (sha256(NewsID+EngineName+Version)):
 	// смена формулы/весов меняет Version, что делает старые SignalID не сравнимыми с новыми.
-	Version                string                  `yaml:"version"`
-	WorkerPoolSize         int                     `yaml:"worker_pool_size"`
-	Weights                Weights                 `yaml:"weights"`
+	Version        string  `yaml:"version"`
+	WorkerPoolSize int     `yaml:"worker_pool_size"`
+	Weights        Weights `yaml:"weights"`
+	// FixedPositionQuantity — размер лота для sizing/fixed.Sizer, пока нет
+	// риск-based sizing по реальному балансу/цене (см. broker/bcs).
+	FixedPositionQuantity  int64                   `yaml:"fixed_position_quantity"`
 	UnknownSurprisePenalty float64                 `yaml:"unknown_surprise_penalty"`
 	MixedSentimentPenalty  float64                 `yaml:"mixed_sentiment_penalty"`
 	EventModifiers         map[string]float64      `yaml:"event_modifiers"`
 	Thresholds             map[string]ThresholdSet `yaml:"thresholds"` // ключ — Track
+	Filter                 FilterConfig            `yaml:"filter"`
 	Watchlist              []string                `yaml:"watchlist"`
 	Keywords               map[string][]string     `yaml:"keywords"` // ключ — EventType
 }
